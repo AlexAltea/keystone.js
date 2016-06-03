@@ -1,0 +1,8 @@
+# Dependencies NodeJS
+node_modules/
+
+# Emscripten builds
+*.out.js
+
+# Keystone.js
+/dist/*.js
