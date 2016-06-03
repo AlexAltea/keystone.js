@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="en" data-ng-app="CapstoneJS">
+﻿<!DOCTYPE html>
+<html lang="en" data-ng-app="KeystoneJS">
     <head>
         <meta charset="utf-8"/>
 
-        <title>Capstone.js</title>
+        <title>Keystone.js</title>
 
         <!-- External stylesheets -->
         <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
@@ -51,12 +51,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="http://alexaltea.github.io/capstone.js/">Capstone.js</a>
+                    <a class="navbar-brand" href="http://alexaltea.github.io/keystone.js/">Keystone.js</a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="https://github.com/AlexAltea/capstone.js/releases/download/v3.0/capstone.min.js">Download</a></li>
-                        <li><a href="https://github.com/AlexAltea/capstone.js">Github</a></li>
+                        <li><a href="https://github.com/AlexAltea/keystone.js/releases/download/v0.9/keystone.min.js">Download</a></li>
+                        <li><a href="https://github.com/AlexAltea/keystone.js">Github</a></li>
                     </ul>
                 </div>
             </div>
@@ -64,12 +64,12 @@
 
         <div class="jumbotron">
             <div class="container">
-                <h1>Capstone.js</h1>
-                <p>The Capstone disassembler framework, now available for JavaScript.</p>
+                <h1>Keystone.js</h1>
+                <p>The Keystone assembler framework, now available for JavaScript.</p>
                 <p>
-                    <a class="btn btn-primary btn-lg" href="https://github.com/AlexAltea/capstone.js/releases/download/v3.0/capstone.min.js" role="button">Download &raquo;</a>
-                    <a class="btn btn-primary btn-lg" href="https://github.com/AlexAltea/capstone.js" role="button">Github &raquo;</a>
-                    <a class="btn btn-danger btn-lg" href="http://www.capstone-engine.org/" role="button">Capstone &raquo;</a>
+                    <a class="btn btn-primary btn-lg" href="https://github.com/AlexAltea/keystone.js/releases/download/v0.9/keystone.min.js" role="button">Download &raquo;</a>
+                    <a class="btn btn-primary btn-lg" href="https://github.com/AlexAltea/keystone.js" role="button">Github &raquo;</a>
+                    <a class="btn btn-danger btn-lg" href="http://www.keystone-engine.org/" role="button">Keystone &raquo;</a>
                 </p>
             </div>
         </div>
@@ -78,11 +78,11 @@
             
             <h2>Demo</h2>
             <p>
-                Before going to the Installation / Tutorial panels below, you might want to know how Capstone.js tastes like.
-                Here you have a simple demo, providing realtime client-side machine code disassembling thanks to Capstone.js and Angular.
+                Before going to the Installation / Tutorial panels below, you might want to know how Keystone.js tastes like.
+                Here you have a simple demo, providing realtime client-side machine code disassembling thanks to Keystone.js and Angular.
                 The architecture/endianness/mode combination is not verified in this demonstration, thus leading to a JavaScript error if you choose them wrong (e.g. '<i>16-bit PowerPC</i>', '<i>Big-endian x86</i>', etc.)
             </p>
-            <div class="row" data-ng-controller="cjsController">
+            <div class="row" data-ng-controller="kjsController">
                 <div class="col-md-6">
                     <h3>Machine code</h3>
                     <div class="row">
@@ -172,39 +172,28 @@
             <div class="row">
                 <div class="col-md-6">
                     <h2>Information</h2>
-                    <p><b>Capstone.js</b> is a port of the <a href="http://www.capstone-engine.org/">Capstone</a> disassembler framework for JavaScript, done with <a href="https://github.com/kripken/emscripten">Emscripten</a>. It's released as a 6 MB JavaScript file supporting the architectures: <i>ARM</i>, <i>ARM64</i>, <i>MIPS</i>, <i>PowerPC</i>, <i>Sparc</i>, <i>SystemZ</i>, <i>XCore</i> and <i>x86</i>. Follow the <a href="https://github.com/AlexAltea/capstone.js/blob/master/README.md">Readme</a> to compile a subset of these, with a size of 600 KB per platform.</p>
-                    <p>Capstone is a lightweight multi-architecture disassembly framework originally developed by Nguyen Anh Quynh, with support of other developers and released under BSD license. None of its source code has been altered for this port.</p>
+                    <p><b>Keystone.js</b> is a port of the <a href="http://www.keystone-engine.org/">Keystone</a> assembler framework for JavaScript, done with <a href="https://github.com/kripken/emscripten">Emscripten</a>. It's released as a 6 MB JavaScript file supporting the architectures: <i>ARM</i>, <i>ARM64</i>, <i>Hexagon</i>, <i>MIPS</i>, <i>PowerPC</i>, <i>SPARC</i>, <i>SystemZ</i> and <i>x86</i>. Follow the <a href="https://github.com/AlexAltea/keystone.js/blob/master/README.md">Readme</a> to build Keystone.js manually.</p>
+                    <p>Keystone is a lightweight multi-architecture assembler framework originally developed by Nguyen Anh Quynh et al. and released under a dual license GPLv2 and the possibility of its commercial usage. None of its source code has been altered for this port.</p>
 
                     <h2>Installation</h2>
-                    <p>To use the Capstone.js in your web application, download and include it with:</p>
-                    <p><pre><code>&lt;script src="capstone.min.js"&gt;&lt;/script&gt;</code></pre></p>
+                    <p>To use the Keystone.js in your web application, download and include it with:</p>
+                    <p><pre><code>&lt;script src="keystone.min.js"&gt;&lt;/script&gt;</code></pre></p>
                     <p>or install it through the Bower command:</p>
-                    <p><pre><code>bower install capstonejs</code></pre></p>
+                    <p><pre><code>bower install keystonejs</code></pre></p>
                 </div>
                 <div class="col-md-6">
                     <h2>Tutorial</h2>
                     <p>
-<pre><code class="javascript">// Input: Machine code bytes and offset where they are located
-var buffer = [0x55, 0x48, 0x8b, 0x05, 0xb8, 0x13, 0x00, 0x00];
-var offset = 0x1000;
+<pre><code class="javascript">// Input: Assembly
+var assembly = "TODO";
 
-// Initialize the decoder
-var cs = new capstone.Cs(capstone.ARCH_X86, capstone.MODE_64);
+// Initialize the encoder
+var kst = new ks.Keystone(ks.ARCH_X86, ks.MODE_64);
 
-// Output: Array of capstone.Instruction objects
-var instructions = cs.disasm(buffer, offset);
+// TODO
 
-// Display results;
-instructions.forEach(function (instr) {
-    console.log("0x%s:\t%s\t%s",
-        instr.address.toString(16),
-        instr.mnemonic,
-        instr.op_str
-    );
-});
-
-// Delete decoder
-cs.delete();</code></pre>
+// Delete encoder
+kst.delete();</code></pre>
                     </p>
                 </div>
             </div>
@@ -212,9 +201,9 @@ cs.delete();</code></pre>
             <hr />
 
             <footer class="container">
-                <p style="color: #666; font-weight: 300">&copy; Capstone.JS 2014. Wrapper made by Alexandro S&aacute;nchez Bach.</p>
+                <p style="color: #666; font-weight: 300">&copy; Keystone.JS 2016. Wrapper made by Alexandro S&aacute;nchez Bach.</p>
                 <p style="color: #666; font-weight: 300">
-                    Capstone.JS uses on the Capstone framework, originally developed by Nguyen Anh Quynh.<br/>
+                    Keystone.JS uses on the Keystone framework, originally developed by Nguyen Anh Quynh et al.<br/>
                     Check the repository for license details.
                 </p>
             </footer>
@@ -225,66 +214,58 @@ cs.delete();</code></pre>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/languages/javascript.min.js"></script>
         
-        <!-- CapstoneJS -->
-        <script src="https://github.com/AlexAltea/capstone.js/releases/download/v3.0.4/capstone.min.js"></script>
+        <!-- KeystoneJS -->
+        <script src="https://github.com/AlexAltea/keystone.js/releases/download/v0.9/keystone.min.js"></script>
 
-        <!-- Simple demo of CapstoneJS -->
+        <!-- Simple demo of KeystoneJS -->
         <script>
             // Highlight.JS
             hljs.initHighlightingOnLoad();
 
-            // Capstone global object
-            var cs = new capstone.Cs(capstone.ARCH_X86, capstone.MODE_64);
+            // Keystone global object
+            var kst = new ks.Keystone(ks.ARCH_X86, ks.MODE_64);
 
-            function capstoneConfigure(arch, mode) {
-                cs.delete();
-                cs = new capstone.Cs(arch, mode);
+            function keystoneConfigure(arch, mode) {
+                kst.delete();
+                kst = new ks.Keystone(arch, mode);
             }
 
-            function capstoneRender($scope) {
-                var trimmedBuffer = $scope.buffer.replace(/[^a-fA-F0-9]/g, '');
-                if (trimmedBuffer.length % 2 == 0) {
-                    var csBuffer = [];
-                    for (var i = 0; i < trimmedBuffer.length; i += 2) {
-                        csBuffer.push(parseInt(trimmedBuffer.substr(i, 2), 16));
-                    }
-                    $scope.instructions = cs.disasm(csBuffer, $scope.offset);
-                }
+            function keystoneRender($scope) {
+                // TODO
             }
 
             // AngularJS
-            var cjs = angular.module('CapstoneJS', []);
+            var kjs = angular.module('KeystoneJS', []);
 
             // Controllers
-            cjs.controller('cjsController', ['$scope', function ($scope) {
+            kjs.controller('kjsController', ['$scope', function ($scope) {
                 $scope.$watch('architecture', function () {
-                    capstoneConfigure($scope.architecture, $scope.endianness | $scope.mode);
-                    capstoneRender($scope);
+                    keystoneConfigure($scope.architecture, $scope.endianness | $scope.mode);
+                    keystoneRender($scope);
                 });
                 $scope.$watch('endianness', function () {
-                    capstoneConfigure($scope.architecture, $scope.endianness | $scope.mode);
-                    capstoneRender($scope);
+                    keystoneConfigure($scope.architecture, $scope.endianness | $scope.mode);
+                    keystoneRender($scope);
                 });
                 $scope.$watch('mode', function () {
-                    capstoneConfigure($scope.architecture, $scope.endianness | $scope.mode);
-                    capstoneRender($scope);
+                    keystoneConfigure($scope.architecture, $scope.endianness | $scope.mode);
+                    keystoneRender($scope);
                 });
                 $scope.$watch('buffer', function () {
-                    capstoneRender($scope);
+                    keystoneRender($scope);
                 });
                 $scope.$watch('offset', function () {
-                    capstoneRender($scope);
+                    keystoneRender($scope);
                 });
 
-                $scope.architecture = capstone.ARCH_X86;
-                $scope.endianness = capstone.MODE_LITTLE_ENDIAN;
-                $scope.mode = capstone.MODE_64;
-                $scope.offset = 0x10000;
-                $scope.buffer = "55 31 D2 89 E5 8B 45 08";
+                $scope.architecture = ks.ARCH_X86;
+                $scope.endianness = ks.MODE_LITTLE_ENDIAN;
+                $scope.mode = ks.MODE_64;
+                $scope.buffer = "TODO";
             }]);
 
             // Filters
-            cjs.filter('hexadecimal', function () {
+            kjs.filter('hexadecimal', function () {
                 return function (value, length) {
                     var length = length || 8;
                     var str = '0000000000000000' + value.toString(16).toUpperCase();

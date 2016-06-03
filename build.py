@@ -22,8 +22,9 @@ def compileKeystone():
 	cmd = 'cmake'
 	cmd += os.path.expandvars(' -DCMAKE_TOOLCHAIN_FILE=$EMSCRIPTEN/cmake/Modules/Platform/Emscripten.cmake')
 	cmd += ' -DCMAKE_BUILD_TYPE=Release'
-	cmd += ' -DCMAKE_C_FLAGS=\"-Wno-warn-absolute-paths\"'
+	cmd += ' -DBUILD_SHARED_LIBS=OFF'
 	if os.name == 'nt':
+		cmd += ' -DMINGW=ON'
 		cmd += ' -G \"MinGW Makefiles\"'
 	if os.name == 'posix':
 		cmd += ' -G \"Unix Makefiles\"'
@@ -41,7 +42,7 @@ def compileKeystone():
 	# Compile static library to JavaScript
 	cmd = os.path.expandvars('$EMSCRIPTEN/emcc')
 	cmd += ' -O1'
-	cmd += ' keystone/libkeystone.a'
+	cmd += ' keystone/llvm/lib/libkeystone.a'
 	cmd += ' -s EXPORTED_FUNCTIONS=\"[\''+ '\', \''.join(EXPORTED_FUNCTIONS) +'\']\"'
 	cmd += ' -o src/keystone.out.js'
 	os.system(cmd)
