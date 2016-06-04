@@ -29,7 +29,7 @@
             }
             .editor {
                 position: relative;
-                height: 300px;
+                height: 200px;
             }
             .monospaced {
                 font-family: 'Inconsolata';
@@ -90,29 +90,37 @@
             <div class="row" data-ng-controller="kjsController">
                 <div class="col-md-6">
                     <h3>Assembly</h3>
-                    <div style="padding-bottom:4px">
-                        <select ng-model="architecture" class="selectpicker" data-width="180px">
-                            <option title="Architecture: <i style='color:#888;'>ARM</i>" value="1">ARM</option>
-                            <option title="Architecture: <i style='color:#888;'>ARM64</i>" value="2">ARM64</option>
-                            <option title="Architecture: <i style='color:#888;'>MIPS</i>" value="3">MIPS</option>
-                            <option title="Architecture: <i style='color:#888;'>x86</i>" value="4">x86</option>
-                            <option title="Architecture: <i style='color:#888;'>PowerPC</i>" value="5">PowerPC</option>
-                            <option title="Architecture: <i style='color:#888;'>SPARC</i>" value="6">SPARC</option>
-                            <option title="Architecture: <i style='color:#888;'>SystemZ</i>" value="7">SystemZ</option>
-                            <option title="Architecture: <i style='color:#888;'>Hexagon</i>" value="8">Hexagon</option>
-                        </select>
-                        <select ng-model="endianness" class="selectpicker" data-width="180px">
-                            <option title="Endianness: <i style='color:#888;'>Little</i>" value="0">Little-Endian</option>
-                            <option title="Endianness: <i style='color:#888;'>Big</i>" value="-2147483648">Big-Endian</option>
-                        </select>
-                        <select ng-model="mode" class="selectpicker" data-width="180px">
+                    <div style="padding-bottom:4px"><form class="form-inline">
+                        <div class="form-group"><select ng-model="architecture" class="selectpicker" data-width="130px">
+                            <option title="Arch: <i style='color:#888;'>ARM</i>" value="1">ARM</option>
+                            <option title="Arch: <i style='color:#888;'>ARM64</i>" value="2">ARM64</option>
+                            <option title="Arch: <i style='color:#888;'>MIPS</i>" value="3">MIPS</option>
+                            <option title="Arch: <i style='color:#888;'>x86</i>" value="4">x86</option>
+                            <option title="Arch: <i style='color:#888;'>PowerPC</i>" value="5">PowerPC</option>
+                            <option title="Arch: <i style='color:#888;'>SPARC</i>" value="6">SPARC</option>
+                            <option title="Arch: <i style='color:#888;'>SystemZ</i>" value="7">SystemZ</option>
+                            <option title="Arch: <i style='color:#888;'>Hexagon</i>" value="8">Hexagon</option>
+                        </select></div>
+                        <div class="form-group"><select ng-model="endianness" class="selectpicker" data-width="130px">
+                            <option title="Endian: <i style='color:#888;'>Little</i>" value="0">Little-Endian</option>
+                            <option title="Endian: <i style='color:#888;'>Big</i>" value="-2147483648">Big-Endian</option>
+                        </select></div>
+                        <div class="form-group"><select ng-model="mode" class="selectpicker" data-width="130px">
                             <option title="Mode: <i style='color:#888;'>16-bit</i>" value="2">16-bit</option>
                             <option title="Mode: <i style='color:#888;'>32-bit</i>" value="4">32-bit</option>
                             <option title="Mode: <i style='color:#888;'>64-bit</i>" value="8">64-bit</option>
-                        </select>
-                    </div>
-                    <div class="editor" id="editorInput">inc eax;
-dec ecx;
+                        </select></div>
+                        <div class="form-group"><div class="input-group" style="width:150px">
+                            <span class="input-group-addon">Offset</span>
+                            <input type="text" class="form-control" ng-model="offset" placeholder="(decimal)">
+                        </div></div>
+                    </form></div>
+                    <div class="editor" id="editorInput">inc   rax;
+call  0x10040;
+mov   rax, qword ptr[rdx + 4];
+sub   esp, 0x100;
+xchg  rdi, rsi;
+pop   rbx;
 </div>
                 </div>
                 <div class="col-md-6">
@@ -152,17 +160,22 @@ dec ecx;
                     <p>
 <pre><code class="javascript">// Input: Assembly
 var assembly = `
-.loop:
-  xadd     rax,rdx
-  loop     .loop
+  inc   rax;
+  call  0x10040;
+  mov   rax, qword ptr[rdx + 4];
+  sub   esp, 0x100;
+  pop   rbx;
 `;
 
 // Initialize the encoder
 var kst = new ks.Keystone(ks.ARCH_X86, ks.MODE_64);
 
+// Choose preferred syntax
+kst.option(ks.KS_OPT_SYNTAX, ks.OPT_SYNTAX_INTEL);
+
 // Assemble instructions
 var mc = kst.asm(assembly);
-var buffer = [0x55, 0x48, 0x8b, 0x05, 0xb8, 0x13, 0x00, 0x00];
+/* mc = new Uint8Array([0x48, 0xFF, 0xC0, 0xE8, ...]); */
 
 // Delete encoder
 kst.delete();</code></pre>
@@ -246,8 +259,7 @@ kst.delete();</code></pre>
             }
 
             function keystoneRender($scope) {
-                $scope.mc = kst.asm($scope.assembly, 0);
-                var mcBuf = $scope.mc;
+                $scope.mc = kst.asm($scope.assembly, $scope.offset);
                 var mcLen = $scope.mc.length;
                 
                 var output = "";
@@ -263,9 +275,9 @@ kst.delete();</code></pre>
                         break;
                     case 'u8':
                         output += "const uint8_t buffer[] = {\n";
-                        for (var offset = 0; offset < mcLen; offset += 16) {
+                        for (var offset = 0; offset < mcLen; offset += 8) {
                             output += "  ";
-                            for (var i = offset; i < offset + 16 && i < mcLen; i++) {
+                            for (var i = offset; i < offset + 8 && i < mcLen; i++) {
                                 output += "0x" + hexByte($scope.mc[i]) + ", ";
                             }
                             output = output.substring(0, output.length - 1);
@@ -276,7 +288,7 @@ kst.delete();</code></pre>
                         editorOutput.getSession().setMode("ace/mode/c_cpp");
                         break;
                     case 'char':
-                        output += "const char* buffer = {\n";
+                        output += "const char* buffer =\n";
                         for (var offset = 0; offset < mcLen; offset += 16) {
                             output += "  \"";
                             for (var i = offset; i < offset + 16 && i < mcLen; i++) {
@@ -284,7 +296,8 @@ kst.delete();</code></pre>
                             }
                             output += "\"\n";
                         }
-                        output += "};\n";
+                        output = output.substring(0, output.length - 1);
+                        output += ";\n";
                         editorOutput.getSession().setMode("ace/mode/c_cpp");
                         break;
                 }
@@ -322,8 +335,14 @@ kst.delete();</code></pre>
                 $scope.architecture = ks.ARCH_X86;
                 $scope.endianness = ks.MODE_LITTLE_ENDIAN;
                 $scope.mode = ks.MODE_64;
-                $scope.assembly = 'inc ecx; dec edx;';
+                $scope.offset = 0x10000;
                 $scope.preview = 'bin';
+                $scope.assembly = `inc   rax;
+call  0x10040;
+mov   rax, qword ptr[rdx + 4];
+sub   esp, 0x100;
+xchg  rdi, rsi;
+pop   rbx;`;
             }]);
 
             // Filters

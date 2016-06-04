@@ -25,24 +25,32 @@ var ks = {
 
     // Modes
     MODE_LITTLE_ENDIAN:    0,  // Little-Endian mode (default mode)
-    MODE_BIG_ENDIAN: 1 << 31,  // Big-Endian mode
-    MODE_ARM:        1 <<  0,  // ARM/ARM64: ARM mode
-    MODE_THUMB:      1 <<  4,  // ARM/ARM64: THUMB mode (including Thumb-2)
-    MODE_V8:         1 <<  6,  // ARM/ARM64: ARMv8 A32 encodings for ARM
-    MODE_MICRO:      1 <<  4,  // MIPS: MicroMips mode
-    MODE_MIPS3:      1 <<  5,  // MIPS: Mips III ISA
-    MODE_MIPS32R6:   1 <<  6,  // MIPS: Mips32r6 ISA
-    MODE_MIPS32:     1 <<  2,  // MIPS: Mips32 ISA
-    MODE_MIPS64:     1 <<  3,  // MIPS: Mips64 ISA
-    MODE_16:         1 <<  1,  // X86: 16-bit mode
-    MODE_32:         1 <<  2,  // X86: 32-bit mode
-    MODE_64:         1 <<  3,  // X86: 64-bit mode
-    KS_MODE_PPC32:   1 <<  2,  // PPC: 32-bit mode
-    KS_MODE_PPC64:   1 <<  3,  // PPC: 64-bit mode
-    KS_MODE_QPX:     1 <<  4,  // PPC: Quad Processing eXtensions mode
-    KS_MODE_SPARC32: 1 <<  2,  // SPARC: 32-bit mode
-    KS_MODE_SPARC64: 1 <<  3,  // SPARC: 64-bit mode
-    KS_MODE_V9:      1 <<  4,  // SPARC: SparcV9 mode
+    MODE_BIG_ENDIAN:  1 << 31,  // Big-Endian mode
+    MODE_ARM:         1 <<  0,  // ARM/ARM64: ARM mode
+    MODE_THUMB:       1 <<  4,  // ARM/ARM64: THUMB mode (including Thumb-2)
+    MODE_V8:          1 <<  6,  // ARM/ARM64: ARMv8 A32 encodings for ARM
+    MODE_MICRO:       1 <<  4,  // MIPS: MicroMips mode
+    MODE_MIPS3:       1 <<  5,  // MIPS: Mips III ISA
+    MODE_MIPS32R6:    1 <<  6,  // MIPS: Mips32r6 ISA
+    MODE_MIPS32:      1 <<  2,  // MIPS: Mips32 ISA
+    MODE_MIPS64:      1 <<  3,  // MIPS: Mips64 ISA
+    MODE_16:          1 <<  1,  // X86: 16-bit mode
+    MODE_32:          1 <<  2,  // X86: 32-bit mode
+    MODE_64:          1 <<  3,  // X86: 64-bit mode
+    MODE_PPC32:       1 <<  2,  // PPC: 32-bit mode
+    MODE_PPC64:       1 <<  3,  // PPC: 64-bit mode
+    MODE_QPX:         1 <<  4,  // PPC: Quad Processing eXtensions mode
+    MODE_SPARC32:     1 <<  2,  // SPARC: 32-bit mode
+    MODE_SPARC64:     1 <<  3,  // SPARC: 64-bit mode
+    MODE_V9:          1 <<  4,  // SPARC: SparcV9 mode
+    
+    // Options
+    OPT_SYNTAX:             1,  // Choose syntax for input assembly
+    OPT_SYNTAX_INTEL: 1 <<  0,  // KS_OPT_SYNTAX: X86 Intel syntax - default on X86
+    OPT_SYNTAX_ATT:   1 <<  1,  // KS_OPT_SYNTAX: X86 ATT asm syntax
+    OPT_SYNTAX_NASM:  1 <<  2,  // KS_OPT_SYNTAX: X86 NASM syntax
+    OPT_SYNTAX_MASM:  1 <<  3,  // KS_OPT_SYNTAX: X86 MASM syntax - unsupported yet
+    OPT_SYNTAX_GAS:   1 <<  4,  // KS_OPT_SYNTAX: X86 GNU GAS syntax
 
     /**
      * Capstone object
@@ -56,9 +64,21 @@ var ks = {
         this.delete = function () {
             Module._free(this.handle_ptr);
         }
+        
+        // Options
+        this.option = function(option, value) {
+            if (!handle) {
+                return;
+            }
+            
+            var ret = Module.ccall('ks_option', 'number',
+                ['pointer', 'number', 'number'],
+                [handle, option, value]
+            );
+        }
 
-        // Assemble
-        this.asm = function (assembly) {
+        // Assembler
+        this.asm = function (assembly, address) {
             var handle = Module.getValue(this.handle_ptr, '*');
             if (!handle) {
                 return [];
@@ -76,9 +96,10 @@ var ks = {
 
             // Run the assembler. Note that the third argument is split
             // in the two integers that make the uint64_t address value.
+            // Due to JavaScript limitations only the lower 32-bit can be modified.
             var ret = Module.ccall('ks_asm', 'number',
                 ['pointer', 'pointer', 'number', 'number', 'pointer', 'pointer', 'pointer'],
-                [handle, buffer_heap.byteOffset, 0x0, 0x0, insn_ptr, size_ptr, count_ptr]
+                [handle, buffer_heap.byteOffset, address, 0x0, insn_ptr, size_ptr, count_ptr]
             );
             if (ret != ks.ERR_OK) {
                 return [];
