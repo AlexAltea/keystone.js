@@ -131,7 +131,7 @@ var ks = {
         );
 
         if (ret != ks.ERR_OK) {
-            Module.setValue(handle_ptr, 0, '*');
+            Module.setValue(this.handle_ptr, 0, '*');
             console.error('Keystone.js: Function ks_open failed with code %d.', ret);
         }
     },

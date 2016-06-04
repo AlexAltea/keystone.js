@@ -23,6 +23,7 @@ def compileKeystone():
 	cmd += os.path.expandvars(' -DCMAKE_TOOLCHAIN_FILE=$EMSCRIPTEN/cmake/Modules/Platform/Emscripten.cmake')
 	cmd += ' -DCMAKE_BUILD_TYPE=Release'
 	cmd += ' -DBUILD_SHARED_LIBS=OFF'
+	cmd += ' -DCMAKE_CXX_FLAGS="-Os"'
 	if os.name == 'nt':
 		cmd += ' -DMINGW=ON'
 		cmd += ' -G \"MinGW Makefiles\"'
@@ -41,7 +42,7 @@ def compileKeystone():
 
 	# Compile static library to JavaScript
 	cmd = os.path.expandvars('$EMSCRIPTEN/emcc')
-	cmd += ' -O1'
+	cmd += ' -Os --memory-init-file 0'
 	cmd += ' keystone/llvm/lib/libkeystone.a'
 	cmd += ' -s EXPORTED_FUNCTIONS=\"[\''+ '\', \''.join(EXPORTED_FUNCTIONS) +'\']\"'
 	cmd += ' -o src/keystone.out.js'

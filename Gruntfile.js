@@ -26,6 +26,12 @@ module.exports = function (grunt) {
                 }
             }
         },
+        concat: {
+            dist: {
+                src: ['src/keystone.out.js', 'src/keystone-wrapper.js'],
+                dest: 'dist/keystone.min.js'
+            }
+        },
         connect: {
             options: {
                 port: 9001,
@@ -54,7 +60,7 @@ module.exports = function (grunt) {
     // Project tasks
     grunt.registerTask('build', [
         'exec:emscripten',
-        'uglify'
+        'concat'
     ]);
     grunt.registerTask('serve', [
         'connect',
