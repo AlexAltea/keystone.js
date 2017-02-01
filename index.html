@@ -80,7 +80,7 @@
         </div>
 
         <div class="container">
-            
+
             <h2>Demo</h2>
             <p>
                 Before going to the Installation / Tutorial panels below, you might want to see how Keystone.js works.
@@ -200,19 +200,18 @@ kst.delete();</code></pre>
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/snippets/glsl.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/languages/javascript.min.js"></script>
         <script src="externals/download.js"></script>
-        
+
         <!-- KeystoneJS -->
-        <script src="//github.com/AlexAltea/keystone.js/releases/download/v0.9/keystone.min.js"></script>
+        <script src="dist/keystone.min.js"></script>
 
         <!-- Simple demo of KeystoneJS -->
         <script>
             // Highlight.JS
             hljs.initHighlightingOnLoad();
-            
+
             // Ace editor: Assembly
             var editorInput = ace.edit("editorInput");
             editorInput.$blockScrolling = Infinity;
@@ -234,14 +233,14 @@ kst.delete();</code></pre>
             editorOutput.setOption("showPrintMargin", false);
             editorOutput.setOption("displayIndentGuides", false);
             editorOutput.setOption("readOnly", true);
-            
+
             // Utils
             function hexByte(value) {
                 value = value < 0 ? (value + 0x100) : (value);
                 var str = '00' + value.toString(16).toUpperCase();
                 return str.slice(-2);
             };
-            
+
             function downloadBinary() {
                 var scope = angular.element(document.getElementById("editorOutput")).scope();
                 scope.$apply(function () {
@@ -260,7 +259,7 @@ kst.delete();</code></pre>
             function keystoneRender($scope) {
                 $scope.mc = kst.asm($scope.assembly, $scope.offset);
                 var mcLen = $scope.mc.length;
-                
+
                 var output = "";
                 switch ($scope.preview) {
                     case 'bin':

@@ -30,6 +30,8 @@ def compileKeystone(targets):
     cmd += ' -DCMAKE_CXX_FLAGS="-Os"'
     if targets:
         cmd += ' -DLLVM_TARGETS_TO_BUILD="%s"' % (';'.join(targets))
+    else:
+        cmd += ' -DLLVM_TARGETS_TO_BUILD="all"'
     if os.name == 'nt':
         cmd += ' -DMINGW=ON'
         cmd += ' -G \"MinGW Makefiles\"'

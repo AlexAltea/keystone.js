@@ -1,8 +1,9 @@
 # Dependencies NodeJS
 node_modules/
+debug.log
 
 # Emscripten builds
 *.out.js
 
 # Keystone.js
-/dist/*.js
+/dist/keystone-*.js

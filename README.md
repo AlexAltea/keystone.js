@@ -45,8 +45,8 @@ To build the Keystone.js library, clone the *master* branch of this repository, 
 
 1. Initialize the original Keystone submodule: `git submodule update --init`.
 
-2. Install the development and client dependencies with: `npm install` and `bower install`.
+2. Install the latest [Python 2.x (64-bit)](https://www.python.org/downloads/), [CMake](http://www.cmake.org/download/) and the [Emscripten SDK](http://kripken.github.io/emscripten-site/docs/getting_started/downloads.html). Follow the respective instructions and make sure all environment variables are configured correctly. Under Windows [MinGW](http://www.mingw.org/) (specifically *mingw32-make*) is required.
 
-3. Install the latest [Python 2.x (64-bit)](https://www.python.org/downloads/), [CMake](http://www.cmake.org/download/) and the [Emscripten SDK](http://kripken.github.io/emscripten-site/docs/getting_started/downloads.html). Follow the respective instructions and make sure all environment variables are configured correctly. Under Windows [MinGW](http://www.mingw.org/) (specifically *mingw32-make*) is required.
+3. Install the development dependencies with: `npm install`.
 
 4. Finally, build the source with: `grunt build`.
