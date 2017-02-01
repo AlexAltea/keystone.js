@@ -73,21 +73,21 @@ module.exports = function (grunt) {
             grunt.task.run('exec:emscripten');
             grunt.task.run('concat');
         } else {
-            grunt.config.set('lib.suffix', '-'+arch);
+            grunt.config.set('lib.suffix', '-'+arch.toLowerCase());
             grunt.task.run('exec:emscripten:'+arch);
             grunt.task.run('concat');
         }
     });
     grunt.registerTask('release', [
         'build',
-        'build:aarch64',
-        'build:arm',
-        'build:hexagon',
-        'build:mips',
-        'build:powerpc',
-        'build:sparc',
-        'build:systemz',
-        'build:x86',
+        'build:AArch64',
+        'build:ARM',
+        'build:Hexagon',
+        'build:Mips',
+        'build:PowerPC',
+        'build:Sparc',
+        'build:SystemZ',
+        'build:X86',
     ]);
     grunt.registerTask('serve', [
         'connect',

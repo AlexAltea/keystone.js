@@ -18,6 +18,9 @@ EXPORTED_FUNCTIONS = [
     '_ks_version'
 ]
 
+# Directories
+KEYSTONE_DIR = os.path.abspath("keystone")
+
 def compileKeystone(targets):
     # CMake
     cmd = 'cmake'
@@ -51,16 +54,20 @@ def compileKeystone(targets):
     cmd += ' -s MODULARIZE=1'
     cmd += ' -s EXPORT_NAME="\'MKeystone\'"'
     if targets:
-        cmd += ' -o src/libkeystone-%s.out.js' % ('-'.join(targets))
+        cmd += ' -o src/libkeystone-%s.out.js' % '-'.join(targets).lower()
     else:
         cmd += ' -o src/libkeystone.out.js'
     os.system(cmd)
 
 
 if __name__ == "__main__":
+    # Initialize Keystone submodule if necessary
+    if not os.listdir(KEYSTONE_DIR):
+        os.system("git submodule update --init")
+    # Compile Keystone
     targets = sorted(sys.argv[1:])
     if os.name in ['nt', 'posix']:
         compileKeystone(targets)        
     else:
         print "Your operating system is not supported by this script:"
-        print "Please, use Emscripten to compile Keystone manually to src/keystone.out.js"
+        print "Please, use Emscripten to compile Keystone manually to src/libkeystone.out.js"
