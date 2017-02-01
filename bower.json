@@ -1,6 +1,6 @@
 {
   "name": "keystonejs",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Keystone assembler framework port for JavaScript",
   "homepage": "http://alexaltea.github.io/keystone.js/",
   "authors": [

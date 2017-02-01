@@ -1,6 +1,6 @@
 {
   "name": "keystonejs",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Keystone assembler framework port for JavaScript",
   "author": "Alexandro Sanchez Bach <alexaltea123@gmail.com>",
   "repository": {
@@ -17,7 +17,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-exec": "~0.4.6",
     "load-grunt-tasks": "^1.0.0",
-    "time-grunt": "^1.0.0",
+    "time-grunt": "^1.0.0"
   },
   "bugs": {
     "url": "https://github.com/AlexAltea/keystone.js/issues"
