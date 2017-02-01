@@ -1,6 +1,5 @@
 Keystone.js
 ===========
-[![Last Release](https://img.shields.io/badge/version-0.9-brightgreen.svg?style=flat)](https://github.com/AlexAltea/keystone.js/releases)
 
 Port of the [Keystone](https://github.com/keystone-engine/keystone) assembler framework for JavaScript. Powered by [Emscripten](https://github.com/kripken/emscripten).
 

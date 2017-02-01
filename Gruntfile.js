@@ -11,7 +11,13 @@ module.exports = function (grunt) {
     grunt.initConfig({
         exec: {
             emscripten: {
-                command: 'python build.py'
+                cmd: function (arch) {
+                    if (typeof arch === 'undefined') {
+                        return 'python build.py'
+                    } else {
+                        return 'python build.py ' + arch;
+                    }
+                }
             }
         },
         uglify: {
@@ -28,8 +34,11 @@ module.exports = function (grunt) {
         },
         concat: {
             dist: {
-                src: ['src/keystone.out.js', 'src/keystone-wrapper.js'],
-                dest: 'dist/keystone.min.js'
+                src: [
+                    'src/libkeystone<%= lib.suffix %>.out.js',
+                    'src/keystone-wrapper.js'
+                ],
+                dest: 'dist/keystone<%= lib.suffix %>.min.js'
             }
         },
         connect: {
@@ -58,15 +67,30 @@ module.exports = function (grunt) {
     });
 
     // Project tasks
-    grunt.registerTask('build', [
-        'exec:emscripten',
-        'concat'
+    grunt.registerTask('build', 'Build for specific architecture', function (arch) {
+        if (typeof arch === 'undefined') {
+            grunt.config.set('lib.suffix', '');
+            grunt.task.run('exec:emscripten');
+            grunt.task.run('concat');
+        } else {
+            grunt.config.set('lib.suffix', '-'+arch);
+            grunt.task.run('exec:emscripten:'+arch);
+            grunt.task.run('concat');
+        }
+    });
+    grunt.registerTask('release', [
+        'build',
+        'build:aarch64',
+        'build:arm',
+        'build:hexagon',
+        'build:mips',
+        'build:powerpc',
+        'build:sparc',
+        'build:systemz',
+        'build:x86',
     ]);
     grunt.registerTask('serve', [
         'connect',
         'watch'
-    ]);
-    grunt.registerTask('default', [
-        'build'
     ]);
 };
