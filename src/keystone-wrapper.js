@@ -7,53 +7,6 @@
 var MKeystone = new MKeystone();
 
 var ks = {
-    // Return codes
-    ERR_OK:           0,  // No error: everything was fine
-    ERR_NOMEM:        1,  // Out-Of-Memory error: ks_open(), ks_emulate()
-    ERR_ARCH:         2,  // Unsupported architecture: ks_open()
-    ERR_HANDLE:       3,  // Invalid handle
-    ERR_MODE:         4,  // Invalid/unsupported mode: ks_open()
-    ERR_VERSION:      5,  // Unsupported version (bindings)
-    ERR_OPT_INVALID:  6,  // Unsupported option
-
-    // Architectures
-    ARCH_ARM:         1,  // ARM architecture (including Thumb, Thumb-2)
-    ARCH_ARM64:       2,  // ARM-64, also called AArch64
-    ARCH_MIPS:        3,  // MIPS architecture
-    ARCH_X86:         4,  // X86 architecture (including x86 & x86-64)
-    ARCH_PPC:         5,  // PowerPC architecture (currently unsupported)
-    ARCH_SPARC:       6,  // SPARC architecture
-    ARCH_SYSTEMZ:     7,  // SystemZ architecture (S390X)
-    ARCH_HEXAGON:     8,  // Hexagon architecture
-
-    // Modes
-    MODE_LITTLE_ENDIAN:    0,  // Little-Endian mode (default mode)
-    MODE_BIG_ENDIAN:  1 << 31,  // Big-Endian mode
-    MODE_ARM:         1 <<  0,  // ARM/ARM64: ARM mode
-    MODE_THUMB:       1 <<  4,  // ARM/ARM64: THUMB mode (including Thumb-2)
-    MODE_V8:          1 <<  6,  // ARM/ARM64: ARMv8 A32 encodings for ARM
-    MODE_MICRO:       1 <<  4,  // MIPS: MicroMips mode
-    MODE_MIPS3:       1 <<  5,  // MIPS: Mips III ISA
-    MODE_MIPS32R6:    1 <<  6,  // MIPS: Mips32r6 ISA
-    MODE_MIPS32:      1 <<  2,  // MIPS: Mips32 ISA
-    MODE_MIPS64:      1 <<  3,  // MIPS: Mips64 ISA
-    MODE_16:          1 <<  1,  // X86: 16-bit mode
-    MODE_32:          1 <<  2,  // X86: 32-bit mode
-    MODE_64:          1 <<  3,  // X86: 64-bit mode
-    MODE_PPC32:       1 <<  2,  // PPC: 32-bit mode
-    MODE_PPC64:       1 <<  3,  // PPC: 64-bit mode
-    MODE_QPX:         1 <<  4,  // PPC: Quad Processing eXtensions mode
-    MODE_SPARC32:     1 <<  2,  // SPARC: 32-bit mode
-    MODE_SPARC64:     1 <<  3,  // SPARC: 64-bit mode
-    MODE_V9:          1 <<  4,  // SPARC: SparcV9 mode
-    
-    // Options
-    OPT_SYNTAX:             1,  // Choose syntax for input assembly
-    OPT_SYNTAX_INTEL: 1 <<  0,  // KS_OPT_SYNTAX: X86 Intel syntax - default on X86
-    OPT_SYNTAX_ATT:   1 <<  1,  // KS_OPT_SYNTAX: X86 ATT asm syntax
-    OPT_SYNTAX_NASM:  1 <<  2,  // KS_OPT_SYNTAX: X86 NASM syntax
-    OPT_SYNTAX_MASM:  1 <<  3,  // KS_OPT_SYNTAX: X86 MASM syntax - unsupported yet
-    OPT_SYNTAX_GAS:   1 <<  4,  // KS_OPT_SYNTAX: X86 GNU GAS syntax
 
     /**
      * Capstone object

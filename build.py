@@ -18,8 +18,29 @@ EXPORTED_FUNCTIONS = [
     '_ks_version'
 ]
 
+EXPORTED_CONSTANTS = [
+    'bindings/nodejs/consts/arm.js',
+    'bindings/nodejs/consts/arm64.js',
+    'bindings/nodejs/consts/hexagon.js',
+    'bindings/nodejs/consts/keystone.js',
+    'bindings/nodejs/consts/mips.js',
+    'bindings/nodejs/consts/ppc.js',
+    'bindings/nodejs/consts/sparc.js',
+    'bindings/nodejs/consts/systemz.js',
+    'bindings/nodejs/consts/x86.js',
+]
+
 # Directories
 KEYSTONE_DIR = os.path.abspath("keystone")
+
+def generateConstants():
+    out = open('src/keystone-constants.js', 'w')
+    for path in EXPORTED_CONSTANTS:
+        path = os.path.join(KEYSTONE_DIR, path)
+        with open(path, 'r') as f:
+            code = f.read().replace('module.exports', 'ks')
+        out.write(code)
+    out.close()
 
 def compileKeystone(targets):
     # CMake
@@ -69,7 +90,8 @@ if __name__ == "__main__":
     # Compile Keystone
     targets = sorted(sys.argv[1:])
     if os.name in ['nt', 'posix']:
-        compileKeystone(targets)        
+        generateConstants()
+        compileKeystone(targets)
     else:
         print "Your operating system is not supported by this script:"
         print "Please, use Emscripten to compile Keystone manually to src/libkeystone.out.js"
