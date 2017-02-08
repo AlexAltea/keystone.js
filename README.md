@@ -27,17 +27,17 @@ var assembly = `
 `;
 
 // Initialize the encoder
-var kst = new ks.Keystone(ks.ARCH_X86, ks.MODE_64);
+var a = new ks.Keystone(ks.ARCH_X86, ks.MODE_64);
 
 // Choose preferred syntax
-kst.option(ks.KS_OPT_SYNTAX, ks.OPT_SYNTAX_INTEL);
+a.option(ks.KS_OPT_SYNTAX, ks.OPT_SYNTAX_INTEL);
 
 // Assemble instructions
-var mc = kst.asm(assembly);
+var mc = a.asm(assembly);
 /* mc = new Uint8Array([0x48, 0xFF, 0xC0, 0xE8, ...]); */
 
-// Delete encoder
-kst.delete();
+// Close encoder
+a.close();
 ```
 
 ## Building
