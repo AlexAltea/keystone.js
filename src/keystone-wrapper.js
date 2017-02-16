@@ -76,29 +76,27 @@ var ks = {
                 ['pointer', 'pointer', 'number', 'number', 'pointer', 'pointer', 'pointer'],
                 [handle, buffer_ptr, address, 0x0, insn_ptr, size_ptr, count_ptr]
             );
-            if (ret != ks.ERR_OK) {
-                var code = this.errno();
-                var error = 'Keystone.js: Function ks_asm failed with code ' + code + ':\n' + ks.strerror(code);
-                throw error;
-            }
 
             // Get results
             var insn = MKeystone.getValue(insn_ptr, '*');
             var size = MKeystone.getValue(size_ptr, 'i32');
             var count = MKeystone.getValue(count_ptr, 'i32');
-
-            var mc = new Uint8Array(size);
+            var asm = {
+                mc: new Uint8Array(size),
+                failed: Boolean(ret),
+                count: count,
+            };
             for (var i = 0; i < size; i++) {
-                mc[i] = MKeystone.getValue(insn + i, 'i8');
+                asm.mc[i] = MKeystone.getValue(insn + i, 'i8');
             }
 
-            // Free memory and return buffer
+            // Free memory and return object
             var ret = MKeystone.ccall('ks_free', 'void', ['pointer'], insn_ptr);
             MKeystone._free(buffer_ptr);
             MKeystone._free(insn_ptr);
             MKeystone._free(size_ptr);
             MKeystone._free(count_ptr);
-            return mc
+            return asm
         };
 
         this.errno = function() {

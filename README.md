@@ -33,8 +33,10 @@ var a = new ks.Keystone(ks.ARCH_X86, ks.MODE_64);
 a.option(ks.KS_OPT_SYNTAX, ks.OPT_SYNTAX_INTEL);
 
 // Assemble instructions
-var mc = a.asm(assembly);
-/* mc = new Uint8Array([0x48, 0xFF, 0xC0, 0xE8, ...]); */
+var result = a.asm(assembly);
+/* result.failed = false; */
+/* result.count = 5; */
+/* result.mc = new Uint8Array([0x48, 0xFF, 0xC0, 0xE8, ...]); */
 
 // Close encoder
 a.close();
