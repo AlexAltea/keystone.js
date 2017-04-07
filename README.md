@@ -30,7 +30,7 @@ var assembly = `
 var a = new ks.Keystone(ks.ARCH_X86, ks.MODE_64);
 
 // Choose preferred syntax
-a.option(ks.KS_OPT_SYNTAX, ks.OPT_SYNTAX_INTEL);
+a.option(ks.OPT_SYNTAX, ks.OPT_SYNTAX_INTEL);
 
 // Assemble instructions
 var result = a.asm(assembly);
