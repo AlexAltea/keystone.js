@@ -6,13 +6,11 @@ Port of the [Keystone](https://github.com/keystone-engine/keystone) assembler fr
 **Notes:** _Keystone_ is a lightweight multi-architecture assembler framework originally developed by Nguyen Anh Quynh et al. and released under a dual license GPLv2 and the possibility of its commercial usage. More information about contributors and license terms can be found in the files `AUTHORS.TXT`, `CREDITS.TXT` and the files mentioned by the *License* section in `README.md` inside the *keystone* submodule in this repository.
 
 ## Installation
+
 To add Keystone.js to your web application, include it with:
+
 ```html
 <script src="keystone.min.js"></script>
-```
-or install it with the Bower command:
-```bash
-bower install keystonejs
 ```
 
 ## Usage                                                      

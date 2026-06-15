@@ -1,26 +1,31 @@
 {
-  "name": "keystonejs",
+  "name": "@alexaltea/keystone-js",
   "version": "0.9.1",
   "description": "Keystone assembler framework port for JavaScript",
   "author": "Alexandro Sanchez Bach <alexaltea123@gmail.com>",
+  "license": "GPL-2.0",
+  "homepage": "https://alexaltea.github.io/keystone.js/",
+  "keywords": [
+    "keystone",
+    "assembler",
+    "assembly",
+    "wasm",
+    "webassembly"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/AlexAltea/keystone.js.git"
   },
-  "dependencies": {
-  },
-  "devDependencies": {
-    "bower": "^1.3.12",
-    "grunt": "^0.4.5",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-connect": "^0.9.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-exec": "~0.4.6",
-    "load-grunt-tasks": "^1.0.0",
-    "time-grunt": "^1.0.0"
+  "main": "./dist/keystone.js",
+  "files": [
+    "dist/keystone.js",
+    "dist/keystone.wasm"
+  ],
+  "scripts": {
+    "build": "python3 build.py",
+    "serve": "python3 -m http.server"
   },
   "bugs": {
     "url": "https://github.com/AlexAltea/keystone.js/issues"
-  },
-  "private": true
+  }
 }
