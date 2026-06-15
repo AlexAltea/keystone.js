@@ -1,9 +1,13 @@
-# Dependencies NodeJS
-node_modules/
-debug.log
+# CMake
+CMakeCache.txt
+CMakeFiles
+Makefile
+*.cmake
+*.pc
 
-# Emscripten builds
-*.out.js
+# Keystone.js arch-specific variants
+/dist/keystone_*.js
+/dist/keystone_*.wasm
 
-# Keystone.js
-/dist/keystone-*.js
+# Keystone.js packages
+*.zip
