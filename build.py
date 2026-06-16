@@ -104,7 +104,7 @@ def compileKeystone(archs=[], package=False):
         '-DCMAKE_BUILD_TYPE=Release',
         '-DCMAKE_CXX_FLAGS=-Os',
         '-DBUILD_SHARED_LIBS=OFF',
-        '-DBUILD_LIBS_ONLY=ON',
+        '-DBUILD_LIBS_ONLY=1',
         f'-DLLVM_TARGETS_TO_BUILD={";".join(targets)}',
     ]
     subprocess.run(cmd, check=True)

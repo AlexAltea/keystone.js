@@ -1,19 +1,28 @@
 Keystone.js
 ===========
 
-Port of the [Keystone](https://github.com/keystone-engine/keystone) assembler framework for JavaScript. Powered by [Emscripten](https://github.com/kripken/emscripten).
+Port of the [Keystone](https://github.com/keystone-engine/keystone) assembler framework for JavaScript/WASM. Powered by [Emscripten](https://github.com/emscripten-core/emscripten).
 
-**Notes:** _Keystone_ is a lightweight multi-architecture assembler framework originally developed by Nguyen Anh Quynh et al. and released under a dual license GPLv2 and the possibility of its commercial usage. More information about contributors and license terms can be found in the files `AUTHORS.TXT`, `CREDITS.TXT` and the files mentioned by the *License* section in `README.md` inside the *keystone* submodule in this repository.
+**Requirements:** JavaScript environment with [WebAssembly](https://developer.mozilla.org/en-US/docs/WebAssembly) and [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) support.
+
+**Notes:** _Keystone_ is a lightweight multi-architecture assembler framework originally developed by Nguyen Anh Quynh et al. and released under a dual GPLv2 and commercial license. More information about contributors and license terms can be found in the files `AUTHORS.TXT`, `CREDITS.TXT`, `COPYING`, `EXCEPTIONS-CLIENT` and  `LICENSE-COM.TXT` of the *keystone* submodule in this repository.
 
 ## Installation
 
 To add Keystone.js to your web application, include it with:
 
 ```html
-<script src="keystone.min.js"></script>
+<script src="keystone.js"></script>
 ```
 
-## Usage                                                      
+or install it with the NPM command:
+
+```bash
+npm install @alexaltea/keystone-js
+```
+
+## Usage
+
 ```javascript
 // Input: Assembly
 var assembly = `
@@ -43,12 +52,22 @@ MKeystone().then((ks) => {
 ```
 
 ## Building
-To build the Keystone.js library, clone the *master* branch of this repository, and do the following:
 
-1. Initialize the original Keystone submodule: `git submodule update --init`.
+To build the Keystone.js library:
 
-2. Install the latest [Python 2.x (64-bit)](https://www.python.org/downloads/), [CMake](http://www.cmake.org/download/) and the [Emscripten SDK](http://kripken.github.io/emscripten-site/docs/getting_started/downloads.html). Follow the respective instructions and make sure all environment variables are configured correctly. Under Windows [MinGW](http://www.mingw.org/) (specifically *mingw32-make*) is required.
+1. Clone this repository including its submodules:
+    ```bash
+    git clone --recursive https://github.com/AlexAltea/keystone.js
+    ```
 
-3. Install the development dependencies with: `npm install`.
+2. Install the latest [Python 3.x](https://www.python.org/downloads/), [CMake](http://www.cmake.org/download/) and the [Emscripten SDK](https://emscripten.org/docs/getting_started/downloads.html). Follow the corresponding instructions and make sure all environment variables are configured correctly.
 
-4. Finally, build the source with: `grunt build`.
+3. Run the build script:
+   ```bash
+   python3 build.py
+   ```
+
+Build artifacts will be saved to [`dist`](./dist/).
+
+> [!TIP]
+> Pass architecture names to produce a smaller, single-architecture bundle (e.g. `python3 build.py x86`), or `python3 build.py --release` to build every variant.
