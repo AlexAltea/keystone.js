@@ -145,6 +145,15 @@ if __name__ == "__main__":
     if not os.listdir(KEYSTONE_DIR):
         os.system("git submodule update --init")
 
+    # Patch fuzz targets out of Keystone
+    cmakelists = os.path.join(KEYSTONE_DIR, 'CMakeLists.txt')
+    with open(cmakelists) as f:
+        contents = f.read()
+    patched = contents.replace('add_subdirectory(suite/fuzz)', '')
+    if patched != contents:
+        with open(cmakelists, 'w') as f:
+            f.write(patched)
+
     args = sys.argv[1:]
     package = '--package' in args
     release = '--release' in args

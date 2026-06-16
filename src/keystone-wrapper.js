@@ -89,6 +89,7 @@ Object.assign(Module, {
 
     // ks_opt_type
     OPT_SYNTAX: 1,
+    OPT_SYM_RESOLVER: 2,
 
     // ks_opt_value
     OPT_SYNTAX_INTEL: 1 << 0,
@@ -96,10 +97,14 @@ Object.assign(Module, {
     OPT_SYNTAX_NASM: 1 << 2,
     OPT_SYNTAX_MASM: 1 << 3,
     OPT_SYNTAX_GAS: 1 << 4,
+    OPT_SYNTAX_RADIX16: 1 << 5,
 
     // ks_version
     API_MAJOR: 0,
     API_MINOR: 9,
+    VERSION_MAJOR: 0,
+    VERSION_MINOR: 9,
+    VERSION_EXTRA: 2,
 
     version: function() {
         var major_ptr = Module._malloc(4);
