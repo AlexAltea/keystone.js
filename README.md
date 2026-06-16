@@ -17,27 +17,29 @@ To add Keystone.js to your web application, include it with:
 ```javascript
 // Input: Assembly
 var assembly = `
-  inc   rax;
-  call  0x10040;
-  mov   rax, qword ptr[rdx + 4];
-  sub   esp, 0x100;
-  pop   rbx;
+    inc   rax;
+    call  0x10040;
+    mov   rax, qword ptr[rdx + 4];
+    sub   esp, 0x100;
+    pop   rbx;
 `;
 
-// Initialize the encoder
-var a = new ks.Keystone(ks.ARCH_X86, ks.MODE_64);
+MKeystone().then((ks) => {
+    // Initialize the encoder
+    var a = new ks.Keystone(ks.ARCH_X86, ks.MODE_64);
 
-// Choose preferred syntax
-a.option(ks.OPT_SYNTAX, ks.OPT_SYNTAX_INTEL);
+    // Choose preferred syntax
+    a.option(ks.OPT_SYNTAX, ks.OPT_SYNTAX_INTEL);
 
-// Assemble instructions
-var result = a.asm(assembly);
-/* result.failed = false; */
-/* result.count = 5; */
-/* result.mc = new Uint8Array([0x48, 0xFF, 0xC0, 0xE8, ...]); */
+    // Assemble instructions
+    var result = a.asm(assembly);
+    console.log(result.failed); // false
+    console.log(result.count); // 5
+    console.log(result.mc); // Uint8Array([0x48, 0xFF, 0xC0, ...])
 
-// Close encoder
-a.close();
+    // Delete encoder
+    a.close();
+});
 ```
 
 ## Building
