@@ -63,7 +63,8 @@ Object.assign(Module, {
     ARCH_SPARC: 6,
     ARCH_SYSTEMZ: 7,
     ARCH_HEXAGON: 8,
-    ARCH_MAX: 9,
+    ARCH_EVM: 9,
+    ARCH_MAX: 10,
 
     // ks_mode
     MODE_LITTLE_ENDIAN: 0,

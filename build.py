@@ -34,6 +34,7 @@ EXPORTED_FUNCTIONS = [
 AVAILABLE_ARCHITECTURES = {
     'ARM': 'ARM',
     'ARM64': 'AArch64',
+    'EVM': None, # no llvm backend
     'HEXAGON': 'Hexagon',
     'MIPS': 'Mips',
     'PPC': 'PowerPC',
@@ -94,8 +95,8 @@ def compileKeystone(archs=[], package=False):
     shutil.rmtree(KEYSTONE_BUILD_DIR, ignore_errors=True)
 
     # Configure with CMake
-    targets = [AVAILABLE_ARCHITECTURES[a] for a in archs] if archs \
-        else list(AVAILABLE_ARCHITECTURES.values())
+    selected = archs if archs else list(AVAILABLE_ARCHITECTURES)
+    targets = [t for a in selected if (t := AVAILABLE_ARCHITECTURES[a]) is not None]
     cmd = [
         'emcmake', 'cmake',
         '-S', KEYSTONE_DIR,
