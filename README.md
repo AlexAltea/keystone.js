@@ -25,13 +25,12 @@ npm install @alexaltea/keystone-js
 
 ```javascript
 // Input: Assembly
-var assembly = `
-    inc   rax;
-    call  0x10040;
-    mov   rax, qword ptr[rdx + 4];
-    sub   esp, 0x100;
-    pop   rbx;
-`;
+const assembly =
+   `inc   rax
+    call  0x10040
+    mov   rax, qword ptr[rdx + 4]
+    sub   esp, 0x100
+    pop   rbx`;
 
 MKeystone().then((ks) => {
     // Initialize the encoder
