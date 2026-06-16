@@ -126,6 +126,7 @@
                   <select id="architecture" class="form-select">
                     <option value="1">ARM</option>
                     <option value="2">ARM64</option>
+                    <option value="9">EVM</option>
                     <option value="8">Hexagon</option>
                     <option value="3">MIPS</option>
                     <option value="5">PowerPC</option>
@@ -195,7 +196,7 @@
       <div class="row mt-5">
         <div class="col-md-6">
           <h2>Information</h2>
-          <p><b>Keystone.js</b> is a port of the <a href="https://www.keystone-engine.org/">Keystone</a> assembler framework for JavaScript+WASM, powered by <a href="https://github.com/emscripten-core/emscripten">Emscripten</a>. The released 4.2 MiB bundle supports the architectures: <i>ARM</i>, <i>ARM64</i>, <i>Hexagon</i>, <i>MIPS</i>, <i>PowerPC</i>, <i>SPARC</i>, <i>SystemZ</i> and <i>x86</i>. Follow the <a href="https://github.com/AlexAltea/keystone.js/blob/master/README.md">Readme</a> to compile a subset of these into a smaller, single-architecture bundle.</p>
+          <p><b>Keystone.js</b> is a port of the <a href="https://www.keystone-engine.org/">Keystone</a> assembler framework for JavaScript+WASM, powered by <a href="https://github.com/emscripten-core/emscripten">Emscripten</a>. The released 4.2 MiB bundle supports the architectures: <i>ARM</i>, <i>ARM64</i>, <i>EVM</i>, <i>Hexagon</i>, <i>MIPS</i>, <i>PowerPC</i>, <i>SPARC</i>, <i>SystemZ</i> and <i>x86</i>. Follow the <a href="https://github.com/AlexAltea/keystone.js/blob/master/README.md">Readme</a> to compile a subset of these, with an average size of 300 KiB per platform.</p>
           <p>Keystone is a lightweight multi-architecture assembler framework originally developed by Nguyen Anh Quynh et al. and released under GPLv2. None of its source code has been altered for this port.</p>
 
           <h2>Installation</h2>
@@ -304,7 +305,14 @@ MKeystone().then((ks) => {
             k = null;
           }
           const arch = parseInt(elArchitecture.value, 10);
-          const mode = parseInt(elEndianness.value, 10) | parseInt(elMode.value, 10);
+          // EVM has a single mode (little-endian, no bit-width); lock the
+          // endianness/bit-width selectors and force MODE_LITTLE_ENDIAN.
+          const isEvm = arch === ks.ARCH_EVM;
+          elEndianness.disabled = isEvm;
+          elMode.disabled = isEvm;
+          const mode = isEvm
+            ? ks.MODE_LITTLE_ENDIAN
+            : parseInt(elEndianness.value, 10) | parseInt(elMode.value, 10);
           try {
             k = new ks.Keystone(arch, mode);
             elConfigError.classList.add('d-none');
