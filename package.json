@@ -1,6 +1,6 @@
 {
   "name": "@alexaltea/keystone-js",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "Keystone assembler framework port for JavaScript",
   "author": "Alexandro Sanchez Bach <alexaltea123@gmail.com>",
   "license": "GPL-2.0",
