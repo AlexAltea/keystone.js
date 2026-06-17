@@ -9,7 +9,7 @@ Port of the [Keystone](https://github.com/keystone-engine/keystone) assembler fr
 
 ## Installation
 
-To add Keystone.js to your web application, include it with:
+To use Keystone.js in your web application, download and include it with:
 
 ```html
 <script src="keystone.js"></script>
