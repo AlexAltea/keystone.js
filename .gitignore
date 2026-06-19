@@ -5,9 +5,5 @@ Makefile
 *.cmake
 *.pc
 
-# Keystone.js arch-specific variants
-/dist/keystone_*.js
-/dist/keystone_*.wasm
-
-# Keystone.js packages
-*.zip
+# Keystone.js build artifacts
+/dist
