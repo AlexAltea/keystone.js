@@ -45,7 +45,7 @@
         background-color: var(--bs-body-bg);
       }
       #demo .card {
-        height: 420px;
+        height: 360px;
       }
       #demo .card-body {
         display: flex;
@@ -115,13 +115,11 @@
         <div class="col-lg-6">
           <div class="card shadow-sm">
             <div class="card-header">
-              <span class="h6 mb-0 fw-semibold">Assembly
-                <span id="config-error" class="badge text-bg-danger align-middle d-none ms-1" title="Invalid combination of architecture, endianness and mode selected">Invalid</span>
-              </span>
+              <span class="h6 mb-0 fw-semibold">Assembly</span>
             </div>
             <div class="card-body">
               <div class="row g-3">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                   <label for="architecture" class="form-label">Architecture</label>
                   <select id="architecture" class="form-select">
                     <option value="1">ARM</option>
@@ -135,22 +133,11 @@
                     <option value="4">x86</option>
                   </select>
                 </div>
-                <div class="col-sm-6">
-                  <label for="endianness" class="form-label">Endianness</label>
-                  <select id="endianness" class="form-select">
-                    <option value="0">Little-Endian</option>
-                    <option value="1073741824">Big-Endian</option>
-                  </select>
-                </div>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                   <label for="mode" class="form-label">Mode</label>
-                  <select id="mode" class="form-select">
-                    <option value="2">16-bit</option>
-                    <option value="4">32-bit</option>
-                    <option value="8">64-bit</option>
-                  </select>
+                  <select id="mode" class="form-select"></select>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                   <label for="offset" class="form-label">Offset</label>
                   <div class="input-group">
                     <span class="input-group-text">0x</span>
@@ -301,14 +288,12 @@ MKeystone().then((ks) => {
       }
 
       const elArchitecture = document.getElementById('architecture');
-      const elEndianness   = document.getElementById('endianness');
       const elMode         = document.getElementById('mode');
       const elOffset       = document.getElementById('offset');
       const elAssembly     = document.getElementById('assembly');
       const elPreview      = document.getElementById('preview');
       const elOutput       = document.getElementById('output');
       const elSize         = document.getElementById('size');
-      const elConfigError  = document.getElementById('config-error');
 
       // Latest machine code, kept for the download button
       let lastMc = new Uint8Array(0);
@@ -322,8 +307,61 @@ MKeystone().then((ks) => {
 
       // Load the Keystone bundle, then initialize the demo
       loadKeystone().then((ks) => {
-        // Active assembler, recreated when architecture/endianness/mode change
+        const ARCH_MODES = {
+          [ks.ARCH_ARM]: [
+            { label: 'ARM (little-endian)',   mode: ks.MODE_ARM },
+            { label: 'ARM (big-endian)',      mode: ks.MODE_ARM | ks.MODE_BIG_ENDIAN },
+            { label: 'Thumb (little-endian)', mode: ks.MODE_THUMB },
+            { label: 'Thumb (big-endian)',    mode: ks.MODE_THUMB | ks.MODE_BIG_ENDIAN },
+          ],
+          [ks.ARCH_ARM64]: [
+            { label: 'ARM64', mode: ks.MODE_LITTLE_ENDIAN },
+          ],
+          [ks.ARCH_MIPS]: [
+            { label: 'MIPS32',              mode: ks.MODE_MIPS32 },
+            { label: 'MIPS32 (big-endian)', mode: ks.MODE_MIPS32 | ks.MODE_BIG_ENDIAN },
+            { label: 'MIPS64',              mode: ks.MODE_MIPS64 },
+            { label: 'MIPS64 (big-endian)', mode: ks.MODE_MIPS64 | ks.MODE_BIG_ENDIAN },
+          ],
+          [ks.ARCH_X86]: [
+            { label: '16-bit', mode: ks.MODE_16 },
+            { label: '32-bit', mode: ks.MODE_32 },
+            { label: '64-bit', mode: ks.MODE_64 },
+          ],
+          [ks.ARCH_PPC]: [
+            { label: 'PPC32 (big-endian)',    mode: ks.MODE_PPC32 | ks.MODE_BIG_ENDIAN },
+            { label: 'PPC64 (little-endian)', mode: ks.MODE_PPC64 },
+            { label: 'PPC64 (big-endian)',    mode: ks.MODE_PPC64 | ks.MODE_BIG_ENDIAN },
+          ],
+          [ks.ARCH_SPARC]: [
+            { label: 'SPARC (big-endian)',    mode: ks.MODE_SPARC32 | ks.MODE_BIG_ENDIAN },
+            { label: 'SPARC (little-endian)', mode: ks.MODE_SPARC32 },
+            { label: 'SPARC V9 (big-endian)', mode: ks.MODE_SPARC32 | ks.MODE_V9 | ks.MODE_BIG_ENDIAN },
+          ],
+          [ks.ARCH_SYSTEMZ]: [
+            { label: 'SystemZ', mode: ks.MODE_BIG_ENDIAN },
+          ],
+          [ks.ARCH_HEXAGON]: [
+            { label: 'Hexagon', mode: ks.MODE_LITTLE_ENDIAN },
+          ],
+          [ks.ARCH_EVM]: [
+            { label: 'EVM', mode: ks.MODE_LITTLE_ENDIAN },
+          ],
+        };
+
+        // Active assembler, recreated when the architecture or mode change
         let k = null;
+
+        // Update the mode dropdown with the valid modes for the selected architecture
+        function populateModes() {
+          elMode.textContent = '';
+          ARCH_MODES[elArchitecture.value].forEach((m) => {
+            const opt = document.createElement('option');
+            opt.value = m.mode;
+            opt.textContent = m.label;
+            elMode.appendChild(opt);
+          });
+        }
 
         function keystoneConfigure() {
           if (k) {
@@ -331,22 +369,8 @@ MKeystone().then((ks) => {
             k = null;
           }
           const arch = parseInt(elArchitecture.value, 10);
-          // EVM has a single mode (little-endian, no bit-width); lock the
-          // endianness/bit-width selectors and force MODE_LITTLE_ENDIAN.
-          const isEvm = arch === ks.ARCH_EVM;
-          elEndianness.disabled = isEvm;
-          elMode.disabled = isEvm;
-          const mode = isEvm
-            ? ks.MODE_LITTLE_ENDIAN
-            : parseInt(elEndianness.value, 10) | parseInt(elMode.value, 10);
-          try {
-            k = new ks.Keystone(arch, mode);
-            elConfigError.classList.add('d-none');
-            [elArchitecture, elEndianness, elMode].forEach((el) => el.classList.remove('is-invalid'));
-          } catch (e) {
-            elConfigError.classList.remove('d-none');
-            [elArchitecture, elEndianness, elMode].forEach((el) => el.classList.add('is-invalid'));
-          }
+          const mode = parseInt(elMode.value, 10);
+          k = new ks.Keystone(arch, mode);
         }
 
         function keystoneRender() {
@@ -408,12 +432,15 @@ MKeystone().then((ks) => {
           elOutput.value = output;
         }
 
-        // Architectural changes require rebuilding the assembler
-        [elArchitecture, elEndianness, elMode].forEach((el) => {
-          el.addEventListener('change', () => {
-            keystoneConfigure();
-            keystoneRender();
-          });
+        // Changing the architecture rebuilds the mode list and assembler.
+        elArchitecture.addEventListener('change', () => {
+          populateModes();
+          keystoneConfigure();
+          keystoneRender();
+        });
+        elMode.addEventListener('change', () => {
+          keystoneConfigure();
+          keystoneRender();
         });
         // Offset/source/preview changes only require re-rendering
         elOffset.addEventListener('input', keystoneRender);
@@ -424,7 +451,7 @@ MKeystone().then((ks) => {
         elOffset.value       = "10000";
         elAssembly.value     = "inc   rax\ncall  0x10040\nmov   rax, qword ptr [rdx + 4]\nsub   esp, 0x100\nxchg  rdi, rsi\npop   rbx";
         elArchitecture.value = ks.ARCH_X86;
-        elEndianness.value   = ks.MODE_LITTLE_ENDIAN;
+        populateModes();
         elMode.value         = ks.MODE_64;
         keystoneConfigure();
         keystoneRender();
